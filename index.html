@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,129 +9,139 @@
         crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('shattered-island.gif'); /* Ajusta la ruta a la ubicación real de tu imagen */
+            background-size: cover; /* Para cubrir toda la pantalla */
+            background-repeat: no-repeat; /* Evita que se repita si no lo necesitas */
+            background-position: center center; /* Centra la imagen */
+            background-attachment: fixed; /* Hace que el fondo se mantenga fijo al hacer scroll */
+        }
+    </style>
 </head>
-<body class="bg-light">
+
+<body class="bg-dark text-light">
 
     <div class="container py-5">
-        <h1 class="text-center mb-4">FC 24 - Sorteo de Equipos</h1>
+        <div class="card bg-dark text-light shadow-lg p-4" style="border-radius: 20px;">
+            <div class="card-body text-center">
+                <h1 class="display-4 mb-4 fw-bold">FC 24 - Sorteo de Equipos</h1>
+                <p class="lead mb-4">Selecciona los equipos de fútbol y compara sus estadísticas de manera justa con nuestro sistema de sorteo.</p>
 
-        <div class="row">
-            <!-- Barra lateral izquierda -->
-            <div class="col-md-3">
-                <!-- Anuncio AdSense -->
-                <div style="text-align:center;">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8827133243963483"
-                        crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle"
-                        style="display:block"
-                        data-ad-client="ca-pub-8827133243963483"
-                        data-ad-slot="1748364463"
-                        data-ad-format="auto"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </div>
-
-            <!-- Contenido principal -->
-            <div class="col-md-6">
                 <!-- Botón para mostrar/ocultar filtros -->
-                <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
+                <button class="btn btn-primary mb-4" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
                     Mostrar/Ocultar Filtros
                 </button>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Filtrar por Rango de Media (Overall):</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="minOverall" class="form-label">Mínimo:</label>
+                            <input type="range" class="form-range" id="minOverall" min="55" max="85" step="1" value="64"
+                                oninput="document.getElementById('minOverallValue').innerText = this.value">
+                            <span id="minOverallValue">64</span>
+                        </div>
+                        <div class="col-6">
+                            <label for="maxOverall" class="form-label">Máximo:</label>
+                            <input type="range" class="form-range" id="maxOverall" min="55" max="85" step="1" value="84"
+                                oninput="document.getElementById('maxOverallValue').innerText = this.value">
+                            <span id="maxOverallValue">84</span>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Filtros con collapse -->
                 <div class="collapse mt-3" id="filtersCollapse">
                     <div class="mb-3">
-                        <label class="form-label">Filtrar por Liga:</label>
+                        <label class="form-label fw-bold">Filtrar por Liga:</label>
                         <div id="leagueFilters" class="row">
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premier League"> Premier League</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premier League"> Premier
+                                League</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="La Liga"> La Liga</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Friendly International"> Friendly International</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Selección Nacional">
+                                Selecciones</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Ligue 1"> Ligue 1</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Serie A"> Serie A</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Liga Portugal"> Liga Portugal</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Liga Portugal"> Liga Portugal
+                            </div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Eredivisie"> Eredivisie</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Championship"> Championship</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premiership"> Premiership</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Jupiler Pro League"> Jupiler Pro League</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Championship"> Championship
+                            </div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premiership"> Premiership
+                            </div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Jupiler Pro League"> Jupiler
+                                Pro League</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="La Liga 2"> La Liga 2</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Bundesliga"> Bundesliga</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Major League Soccer"> Major League Soccer</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Major League Soccer"> Major
+                                League Soccer</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Superliga"> Superliga</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Ligue 2"> Ligue 2</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Serie B"> Serie B</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Eliteserien"> Eliteserien</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Eliteserien"> Eliteserien
+                            </div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="K League 1"> K League 1</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Ekstraklasa"> Ekstraklasa</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Ekstraklasa"> Ekstraklasa
+                            </div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="League One"> League One</div>
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="League Two"> League Two</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premier Division"> Premier Division</div>
-                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Super League"> Super League</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premier Division"> Premier
+                                Division</div>
+                            <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Super League"> Super League
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Mostrar filtros seleccionados -->
-                <div id="selectedFilters" class="mt-2"></div>
+                <div id="selectedFilters" class="mt-2 mb-4"></div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <button id="clearFiltersBtn" class="btn btn-outline-secondary btn-lg">Limpiar filtros</button>
+                <!-- Botones principales -->
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    <button id="clearFiltersBtn" class="btn btn-outline-light btn-lg">Limpiar filtros</button>
                     <button id="selectBigLeaguesBtn" class="btn btn-outline-success btn-lg">Grandes Ligas</button>
                     <button id="nextTeamBtn" class="btn btn-primary btn-lg">Sortea un equipo</button>
                 </div>
 
-                <div class="row">
+                <!-- Sección de equipos -->
+                <div class="row justify-content-center">
                     <!-- Equipo 1 -->
-                    <div class="col-md-6">
-                        <div id="team1" class="card team-card mb-3">
-                            <div class="card-body">
-                                <h2 class="card-title">Equipo 1</h2>
-                                <p>Nombre: <span id="team1-name"></span></p>
-                                <p>Overall: <span id="team1-overall"></span></p>
+                    <div class="col-md-5">
+                        <div id="team1" class="card text-light bg-secondary shadow-lg mb-4">
+                            <div class="card-body text-center">
+                                <h2 class="card-title fw-bold">Equipo 1</h2>
+                                <p><img id="team1-logo" src="" alt="Logo del equipo" width="100"></p>
+                                <p class="fs-4"><span id="team1-name" class="fw-bold"></span></p>
+                                <p><span id="team1-league"></span></p>
+                                <p><img id="team1-flag" src="" alt="Bandera del país" width="30"> <span id="team1-nationality"></span></p>
+                                <p>Overall: <span id="team1-overall" class="fw-bold"></span></p>
                                 <p>Defensa: <span id="team1-defence"></span></p>
                                 <p>Delantera: <span id="team1-attack"></span></p>
                                 <p>Medio: <span id="team1-midfield"></span></p>
-                                <p>Liga: <span id="team1-league"></span></p>
-                                <p>País: <span id="team1-nationality"></span></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Equipo 2 -->
-                    <div class="col-md-6">
-                        <div id="team2" class="card team-card mb-3">
-                            <div class="card-body">
-                                <h2 class="card-title">Equipo 2</h2>
-                                <p>Nombre: <span id="team2-name"></span></p>
-                                <p>Overall: <span id="team2-overall"></span></p>
+                    <div class="col-md-5">
+                        <div id="team2" class="card text-light bg-secondary shadow-lg mb-4">
+                            <div class="card-body text-center">
+                                <h2 class="card-title fw-bold">Equipo 2</h2>
+                                <p><img id="team2-logo" src="" alt="Logo del equipo" width="100"></p>
+                                <p class="fs-4"><span id="team2-name" class="fw-bold"></span></p>
+                                <p><span id="team2-league"></span></p>
+                                <p><img id="team2-flag" src="" alt="Bandera del país" width="30"> <span id="team2-nationality"></span></p>
+                                <p>Overall: <span id="team2-overall" class="fw-bold"></span></p>
                                 <p>Defensa: <span id="team2-defence"></span></p>
                                 <p>Delantera: <span id="team2-attack"></span></p>
                                 <p>Medio: <span id="team2-midfield"></span></p>
-                                <p>Liga: <span id="team2-league"></span></p>
-                                <p>País: <span id="team2-nationality"></span></p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Barra lateral derecha -->
-            <div class="col-md-3">
-                <!-- Anuncio AdSense -->
-                <div style="text-align:center;">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8827133243963483"
-                        crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle"
-                        style="display:block"
-                        data-ad-client="ca-pub-8827133243963483"
-                        data-ad-slot="1748364463"
-                        data-ad-format="auto"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
             </div>
         </div>
     </div>
@@ -139,4 +150,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

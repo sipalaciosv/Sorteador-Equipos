@@ -1,4 +1,4 @@
-fetch('teams.json')
+fetch('equipos.json')
     .then(response => response.json())
     .then(data => {
         const teams = data;
@@ -28,24 +28,55 @@ fetch('teams.json')
         // Sorteo de equipos
         document.getElementById('nextTeamBtn').addEventListener('click', () => {
             const selectedLeagues = getSelectedLeagues();
-            const filteredTeams = filterTeamsByLeague(teams, selectedLeagues);
+            const overallRange = getOverallRange();
+            const filteredTeams = filterTeamsByLeagueAndOverall(teams, selectedLeagues, overallRange);
 
             if (!firstTeamSelected) {
                 startRoulette(filteredTeams, 'team1', (selectedTeam) => {
                     team1 = selectedTeam;
-                    firstTeamOverall = team1.overall;
+                    firstTeamOverall = team1.Overall; // Guardar el Overall del primer equipo
                     firstTeamSelected = true;
                 });
             } else {
-                let team2;
-                do {
-                    team2 = getRandomTeamWithinRange(filteredTeams, firstTeamOverall);
-                } while (team1 && team2.team_name === team1.team_name);
+                // Filtrar equipos que cumplen con la condición de +/-2 en Overall
+                let filteredByOverall = getTeamsWithinOverallRange(filteredTeams, firstTeamOverall);
 
-                startRoulette(filteredTeams, 'team2', () => {
-                    displayTeamData(team2, 'team2');
-                    firstTeamSelected = false;
-                });
+                if (filteredByOverall.length > 0) { // Solo continuar si hay equipos que cumplen con la diferencia de Overall
+                    startRoulette(filteredByOverall, 'team2', (selectedTeam) => {
+                        displayTeamData(selectedTeam, 'team2'); // Mostrar el equipo final
+                        firstTeamSelected = false; // Reiniciar para la próxima selección
+                    });
+                } else {
+                    alert('No se encontró un equipo dentro del rango de ±2 en Overall.');
+                }
+            }
+        });
+        // Función para filtrar equipos que estén dentro del rango de +/- 2
+        function getTeamsWithinOverallRange(teams, referenceOverall) {
+            const acceptableRange = 2;
+
+            // Filtrar los equipos que están dentro del rango de +/- 2 en Overall
+            return teams.filter(team => Math.abs(team.Overall - referenceOverall) <= acceptableRange);
+        }
+
+        // Rango de overall
+        document.getElementById('minOverall').addEventListener('input', function () {
+            const minOverall = parseInt(this.value);
+            const maxOverall = parseInt(document.getElementById('maxOverall').value);
+
+            if (minOverall > maxOverall) {
+                document.getElementById('maxOverall').value = minOverall;
+                document.getElementById('maxOverallValue').innerText = minOverall;
+            }
+        });
+
+        document.getElementById('maxOverall').addEventListener('input', function () {
+            const maxOverall = parseInt(this.value);
+            const minOverall = parseInt(document.getElementById('minOverall').value);
+
+            if (maxOverall < minOverall) {
+                document.getElementById('minOverall').value = maxOverall;
+                document.getElementById('minOverallValue').innerText = maxOverall;
             }
         });
 
@@ -59,6 +90,7 @@ fetch('teams.json')
             showSelectedFilters(); // Actualizar los filtros seleccionados
         });
 
+        // Mostrar el equipo seleccionado en la ruleta
         function startRoulette(teams, teamId, callback) {
             let index = 0;
             const intervalTime = 100;
@@ -77,29 +109,68 @@ fetch('teams.json')
             }, spinDuration);
         }
 
+        // Obtener los valores del rango de overall
+        function getOverallRange() {
+            const minOverall = document.getElementById('minOverall').value;
+            const maxOverall = document.getElementById('maxOverall').value;
+            return { minOverall, maxOverall };
+        }
+
+        // Obtener ligas seleccionadas
         function getSelectedLeagues() {
             const checkboxes = document.querySelectorAll('#leagueFilters input[type="checkbox"]:checked');
             return Array.from(checkboxes).map(checkbox => checkbox.value);
         }
 
-        function filterTeamsByLeague(teams, selectedLeagues) {
-            return selectedLeagues.length === 0 ? teams : teams.filter(team => selectedLeagues.includes(team.league_name.trim()));
+        // Filtrar equipos por liga y overall
+        function filterTeamsByLeagueAndOverall(teams, selectedLeagues, overallRange) {
+            let filteredTeams = teams;
+
+            // Filtrar por ligas
+            if (selectedLeagues.length > 0) {
+                filteredTeams = filteredTeams.filter(team => selectedLeagues.includes(team.Liga.trim()));
+            }
+
+            // Filtrar por rango de overall
+            filteredTeams = filteredTeams.filter(team => team.Overall >= overallRange.minOverall && team.Overall <= overallRange.maxOverall);
+
+            return filteredTeams;
         }
 
+        // Seleccionar un equipo que tenga una diferencia de +/-2 en el Overall con respecto al equipo 1
         function getRandomTeamWithinRange(teams, referenceOverall) {
             const acceptableRange = 2;
-            const filteredTeams = teams.filter(team => Math.abs(team.overall - referenceOverall) <= acceptableRange);
-            return filteredTeams.length === 0 ? teams[Math.floor(Math.random() * teams.length)] : filteredTeams[Math.floor(Math.random() * filteredTeams.length)];
+
+            // Filtrar los equipos que están dentro del rango de +/- 2 en Overall
+            const filteredTeams = teams.filter(team => Math.abs(team.Overall - referenceOverall) <= acceptableRange);
+
+            // Asegurarse de que solo se seleccionen equipos dentro del rango permitido
+            if (filteredTeams.length > 0) {
+                return filteredTeams[Math.floor(Math.random() * filteredTeams.length)];
+            }
+
+            // Si no hay equipos dentro del rango, devolver null
+            return null;
         }
 
+        // Mostrar los datos del equipo en el HTML
         function displayTeamData(team, teamId) {
-            document.getElementById(`${teamId}-name`).textContent = team.team_name || "No disponible";
-            document.getElementById(`${teamId}-overall`).textContent = team.overall || "No disponible";
-            document.getElementById(`${teamId}-attack`).textContent = team.attack || "No disponible";
-            document.getElementById(`${teamId}-midfield`).textContent = team.midfield || "No disponible";
-            document.getElementById(`${teamId}-defence`).textContent = team.defence || "No disponible";
-            document.getElementById(`${teamId}-league`).textContent = team.league_name || "No disponible";
-            document.getElementById(`${teamId}-nationality`).textContent = team.nationality_name || "No disponible";
+            // Mostrar datos del equipo
+            document.getElementById(`${teamId}-name`).textContent = team.Equipo || "No disponible";
+            document.getElementById(`${teamId}-overall`).textContent = team.Overall || "No disponible";
+            document.getElementById(`${teamId}-attack`).textContent = team.Ataque || "No disponible";
+            document.getElementById(`${teamId}-midfield`).textContent = team.Mediocampo || "No disponible";
+            document.getElementById(`${teamId}-defence`).textContent = team.Defensa || "No disponible";
+            document.getElementById(`${teamId}-league`).textContent = team.Liga || "No disponible";
+            document.getElementById(`${teamId}-nationality`).textContent = team.País || "No disponible";
+
+            // Mostrar logo del equipo
+            document.getElementById(`${teamId}-logo`).src = team.Logo || "default_logo.png";
+            document.getElementById(`${teamId}-logo`).alt = `Logo de ${team.Equipo}`;
+
+            // Mostrar bandera del país
+            document.getElementById(`${teamId}-flag`).src = team.Bandera || "default_flag.png";
+            document.getElementById(`${teamId}-flag`).alt = `Bandera de ${team.País}`;
         }
     })
     .catch(error => console.error('Error al cargar los equipos:', error));
