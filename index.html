@@ -9,39 +9,33 @@
         crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('shattered-island.gif'); /* Ajusta la ruta a la ubicación real de tu imagen */
+            background-size: cover; /* Para cubrir toda la pantalla */
+            background-repeat: no-repeat; /* Evita que se repita si no lo necesitas */
+            background-position: center center; /* Centra la imagen */
+            background-attachment: fixed; /* Hace que el fondo se mantenga fijo al hacer scroll */
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body class="bg-dark text-light">
 
     <div class="container py-5">
-        <h1 class="text-center mb-4">FC 24 - Sorteo de Equipos</h1>
+        <div class="card bg-dark text-light shadow-lg p-4" style="border-radius: 20px;">
+            <div class="card-body text-center">
+                <h1 class="display-4 mb-4 fw-bold">FC 24 - Sorteo de Equipos</h1>
+                <p class="lead mb-4">Selecciona los equipos de fútbol y compara sus estadísticas de manera justa con nuestro sistema de sorteo.</p>
 
-        <div class="row">
-            <!-- Barra lateral izquierda -->
-            <div class="col-md-3">
-                <!-- Anuncio AdSense -->
-                <div style="text-align:center;">
-                    <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8827133243963483"
-                        crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8827133243963483"
-                        data-ad-slot="1748364463" data-ad-format="auto"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </div>
-
-            <!-- Contenido principal -->
-            <div class="col-md-6">
                 <!-- Botón para mostrar/ocultar filtros -->
-                <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse"
+                <button class="btn btn-primary mb-4" type="button" data-bs-toggle="collapse"
                     data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
                     Mostrar/Ocultar Filtros
                 </button>
-                <div class="mb-3">
-                    <label class="form-label">Filtrar por Rango de Media (Overall):</label>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Filtrar por Rango de Media (Overall):</label>
                     <div class="row">
                         <div class="col-6">
                             <label for="minOverall" class="form-label">Mínimo:</label>
@@ -57,10 +51,11 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Filtros con collapse -->
                 <div class="collapse mt-3" id="filtersCollapse">
                     <div class="mb-3">
-                        <label class="form-label">Filtrar por Liga:</label>
+                        <label class="form-label fw-bold">Filtrar por Liga:</label>
                         <div id="leagueFilters" class="row">
                             <div class="col-6 col-md-4 mb-2"><input type="checkbox" value="Premier League"> Premier
                                 League</div>
@@ -101,74 +96,52 @@
                 </div>
 
                 <!-- Mostrar filtros seleccionados -->
-                <div id="selectedFilters" class="mt-2"></div>
+                <div id="selectedFilters" class="mt-2 mb-4"></div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <button id="clearFiltersBtn" class="btn btn-outline-secondary btn-lg">Limpiar filtros</button>
+                <!-- Botones principales -->
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    <button id="clearFiltersBtn" class="btn btn-outline-light btn-lg">Limpiar filtros</button>
                     <button id="selectBigLeaguesBtn" class="btn btn-outline-success btn-lg">Grandes Ligas</button>
                     <button id="nextTeamBtn" class="btn btn-primary btn-lg">Sortea un equipo</button>
                 </div>
 
-                <div class="row">
+                <!-- Sección de equipos -->
+                <div class="row justify-content-center">
                     <!-- Equipo 1 -->
-                    <div class="col-md-6">
-                        <div id="team1" class="card team-card mb-3">
-                            <div class="card-body">
-                                <h2 class="card-title">Equipo 1</h2>
+                    <div class="col-md-5">
+                        <div id="team1" class="card text-light bg-secondary shadow-lg mb-4">
+                            <div class="card-body text-center">
+                                <h2 class="card-title fw-bold">Equipo 1</h2>
                                 <p><img id="team1-logo" src="" alt="Logo del equipo" width="100"></p>
-                                <p><span id="team1-name"></span></p>
+                                <p class="fs-4"><span id="team1-name" class="fw-bold"></span></p>
                                 <p><span id="team1-league"></span></p>
-                                <p><img id="team1-flag" src="" alt="Bandera del país" width="30"> <span
-                                        id="team1-nationality"></span></p>
-
-                                
-                                <p>Overall: <span id="team1-overall"></span></p>
+                                <p><img id="team1-flag" src="" alt="Bandera del país" width="30"> <span id="team1-nationality"></span></p>
+                                <p>Overall: <span id="team1-overall" class="fw-bold"></span></p>
                                 <p>Defensa: <span id="team1-defence"></span></p>
                                 <p>Delantera: <span id="team1-attack"></span></p>
                                 <p>Medio: <span id="team1-midfield"></span></p>
-                                
-                                
                             </div>
                         </div>
                     </div>
 
                     <!-- Equipo 2 -->
-                    <div class="col-md-6">
-                        <div id="team2" class="card team-card mb-3">
-                            <div class="card-body">
-                                <h2 class="card-title">Equipo 2</h2>
+                    <div class="col-md-5">
+                        <div id="team2" class="card text-light bg-secondary shadow-lg mb-4">
+                            <div class="card-body text-center">
+                                <h2 class="card-title fw-bold">Equipo 2</h2>
                                 <p><img id="team2-logo" src="" alt="Logo del equipo" width="100"></p>
-                                <p><span id="team2-name"></span></p>
+                                <p class="fs-4"><span id="team2-name" class="fw-bold"></span></p>
                                 <p><span id="team2-league"></span></p>
-                                <p><img id="team2-flag" src="" alt="Bandera del país" width="30"> <span
-                                        id="team2-nationality"></span></p>
-
-                                
-                                <p>Overall: <span id="team2-overall"></span></p>
+                                <p><img id="team2-flag" src="" alt="Bandera del país" width="30"> <span id="team2-nationality"></span></p>
+                                <p>Overall: <span id="team2-overall" class="fw-bold"></span></p>
                                 <p>Defensa: <span id="team2-defence"></span></p>
                                 <p>Delantera: <span id="team2-attack"></span></p>
                                 <p>Medio: <span id="team2-midfield"></span></p>
-                                
-                                
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Barra lateral derecha -->
-            <div class="col-md-3">
-                <!-- Anuncio AdSense -->
-                <div style="text-align:center;">
-                    <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8827133243963483"
-                        crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8827133243963483"
-                        data-ad-slot="1748364463" data-ad-format="auto"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
             </div>
         </div>
     </div>
