@@ -39,7 +39,21 @@
                 <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
                     Mostrar/Ocultar Filtros
                 </button>
-
+                <div class="mb-3">
+                    <label class="form-label">Filtrar por Rango de Media (Overall):</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="minOverall" class="form-label">Mínimo:</label>
+                            <input type="range" class="form-range" id="minOverall" min="55" max="85" step="1" value="64" oninput="document.getElementById('minOverallValue').innerText = this.value">
+                            <span id="minOverallValue">64</span>
+                        </div>
+                        <div class="col-6">
+                            <label for="maxOverall" class="form-label">Máximo:</label>
+                            <input type="range" class="form-range" id="maxOverall" min="55" max="85" step="1" value="84" oninput="document.getElementById('maxOverallValue').innerText = this.value">
+                            <span id="maxOverallValue">84</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- Filtros con collapse -->
                 <div class="collapse mt-3" id="filtersCollapse">
                     <div class="mb-3">

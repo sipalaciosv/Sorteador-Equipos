@@ -28,7 +28,8 @@ fetch('teams.json')
         // Sorteo de equipos
         document.getElementById('nextTeamBtn').addEventListener('click', () => {
             const selectedLeagues = getSelectedLeagues();
-            const filteredTeams = filterTeamsByLeague(teams, selectedLeagues);
+            const overallRange = getOverallRange();
+            const filteredTeams = filterTeamsByLeagueAndOverall(teams, selectedLeagues, overallRange);
 
             if (!firstTeamSelected) {
                 startRoulette(filteredTeams, 'team1', (selectedTeam) => {
@@ -48,7 +49,26 @@ fetch('teams.json')
                 });
             }
         });
+        // Validar que el mínimo no sea mayor que el máximo
+        document.getElementById('minOverall').addEventListener('input', function () {
+            const minOverall = parseInt(this.value);
+            const maxOverall = parseInt(document.getElementById('maxOverall').value);
 
+            if (minOverall > maxOverall) {
+                document.getElementById('maxOverall').value = minOverall;
+                document.getElementById('maxOverallValue').innerText = minOverall;
+            }
+        });
+
+        document.getElementById('maxOverall').addEventListener('input', function () {
+            const maxOverall = parseInt(this.value);
+            const minOverall = parseInt(document.getElementById('minOverall').value);
+
+            if (maxOverall < minOverall) {
+                document.getElementById('minOverall').value = maxOverall;
+                document.getElementById('minOverallValue').innerText = maxOverall;
+            }
+        });
         // Seleccionar ligas grandes
         document.getElementById('selectBigLeaguesBtn').addEventListener('click', () => {
             const bigLeagues = ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"];
@@ -76,7 +96,12 @@ fetch('teams.json')
                 displayTeamData(selectedTeam, teamId);
             }, spinDuration);
         }
-
+        // Obtener los valores del rango de overall
+        function getOverallRange() {
+            const minOverall = document.getElementById('minOverall').value;
+            const maxOverall = document.getElementById('maxOverall').value;
+            return { minOverall, maxOverall };
+        }
         function getSelectedLeagues() {
             const checkboxes = document.querySelectorAll('#leagueFilters input[type="checkbox"]:checked');
             return Array.from(checkboxes).map(checkbox => checkbox.value);
@@ -85,7 +110,20 @@ fetch('teams.json')
         function filterTeamsByLeague(teams, selectedLeagues) {
             return selectedLeagues.length === 0 ? teams : teams.filter(team => selectedLeagues.includes(team.league_name.trim()));
         }
+        // Filtrar por ligas y overall
+        function filterTeamsByLeagueAndOverall(teams, selectedLeagues, overallRange) {
+            let filteredTeams = teams;
 
+            // Filtrar por ligas
+            if (selectedLeagues.length > 0) {
+                filteredTeams = filteredTeams.filter(team => selectedLeagues.includes(team.league_name.trim()));
+            }
+
+            // Filtrar por rango de overall
+            filteredTeams = filteredTeams.filter(team => team.overall >= overallRange.minOverall && team.overall <= overallRange.maxOverall);
+
+            return filteredTeams;
+        }
         function getRandomTeamWithinRange(teams, referenceOverall) {
             const acceptableRange = 2;
             const filteredTeams = teams.filter(team => Math.abs(team.overall - referenceOverall) <= acceptableRange);
